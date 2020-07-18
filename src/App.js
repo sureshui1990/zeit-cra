@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container } from 'semantic-ui-react';
+import UserRegister from './WorkPlace-Forms/User-Register';
 
 function App() {
   return (
         <div>
         <Container>
-          <h3>Hello World  || Workplace to know about usefull npm package and reactjs features</h3>
+          <UserRegister />
         </Container>
     </div>
   );
