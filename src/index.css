@@ -30,3 +30,7 @@ code {
   width: 50%;
   border: 1px solid #ccc;
 }
+
+img{
+  max-width: 100%;
+}

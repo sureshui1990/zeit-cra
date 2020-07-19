@@ -1,10 +1,10 @@
 import React from 'react';
-import UserRegister from './WorkPlace-Forms/User-Register';
+import ReactHookForm from './WorkPlace-ReactHookForm';
 
 function App() {
   return (
         <div>
-          <UserRegister />
+          <ReactHookForm />
     </div>
   );
 }
