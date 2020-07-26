@@ -26,7 +26,7 @@ export default () => {
             name="uploadedFile"
             placeholder="Upload your file"
             ref={register({
-              required: true,message:'"Please upload your file"'
+              required: true
             })}
           />
           {errors.uploadedFile && (

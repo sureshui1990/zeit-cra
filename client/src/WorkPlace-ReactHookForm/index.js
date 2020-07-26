@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Segment } from "semantic-ui-react";
-import NormalizedCardNumber from "./NormalizedCardNumber";
+import FileUpload from "./FileUpload";
 
 
 export default () => {
@@ -27,7 +27,7 @@ export default () => {
         <Grid.Column computer="7" largeScreen="5" tablet="8" mobile="16">
           <Segment style={contentStyle}>
             <Grid centered>
-              <NormalizedCardNumber />
+              <FileUpload />
             </Grid>
           </Segment>
         </Grid.Column>
