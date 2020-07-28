@@ -5,18 +5,41 @@ import { Form, Image,Grid, Label, Header, Button } from "semantic-ui-react";
 
 export default () => {
   const { register, handleSubmit, errors } = useForm();
-  const [ imgPath, setImgPath ] = useState(null);
+  const [ image, setImage ] = useState({preview:'', raw:''});
+  const [ uploadedFile, setUploadedFile ] = useState({});
 
-  const handleSubmitForm = (data) => {
-    console.log("file data ", data.uploadedFile[0]);
-    const img = URL.createObjectURL(data.uploadedFile[0]);
-    setImgPath(img);
-    console.log('img',img);
-  };
-  return (
+  const handleFile = e=>{
+    if(e.target.files.length){
+      setImage({
+        preview: URL.createObjectURL(e.target.files[0]),
+        raw: e.target.files[0]
+      });
+    }
+  }
+  const handleUpload = async (data) => {
+    const formData = new FormData();
+    formData.append('file',image.raw);
+    try{
+      const res = await fetch("http://localhost:4000/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "charset":"utf-8"
+        },
+        body: formData
+      });
+      const resJson = await res.json();
+      const [fileName, filePath ] = resJson.data;
+      setUploadedFile({fileName, filePath});
+    }catch(err){
+      console.log('err',err);
+    }
+  }
+
+   return (
     <React.Fragment>
       <Grid.Column>
-      <Form onSubmit={handleSubmit(handleSubmitForm)}>
+      <Form onSubmit={handleSubmit(handleUpload)}>
         <Header as="h1" textAlign="center">
           File Upload
         </Header>
@@ -28,6 +51,7 @@ export default () => {
             ref={register({
               required: true
             })}
+            onChange={handleFile}
           />
           {errors.uploadedFile && (
             <Label color="red" pointing>
@@ -42,7 +66,7 @@ export default () => {
           </Button>
         </Form.Field>
       </Form>
-          {imgPath && <Image bordered src={imgPath} title="ben10" alt="ben10" size="medium" /> }
+          {image && image.preview && <Image bordered src={image.preview} title="ben10" alt="ben10" size="medium" /> }
           </Grid.Column>
     </React.Fragment>
   );

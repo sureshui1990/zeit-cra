@@ -6,8 +6,8 @@
   "scripts": {
     "client": "cd client && npm install",
     "server": "cd server && npm install",
-    "install-all-deps": "concurrently \"npm run client \" \"npm run server \" ",
-    "dev": "concurrently   \" cd server && npm run start \" \" cd client && npm run start \" "
+    "install-all-deps": "concurrently \" npm run server \" \" npm run client \" ",
+    "dev": "concurrently \" cd server && npm run start \" \" cd client && npm run start \" "
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,9 @@
   "homepage": "https://github.com/sureshui1990/cra-package-feature-workplace#readme",
   "devDependencies": {
     "concurrently": "^5.2.0"
+  },
+  "dependencies": {
+    "my-app": "file:client",
+    "server": "file:server"
   }
 }

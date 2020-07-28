@@ -2,6 +2,7 @@
 const express =  require('express');
 const bodyParser = require('body-parser');
 const fileUpload =  require('express-fileupload');
+const cors = require('cors');
 
 // Constant
 const port = process.env.PORT || 4000;
@@ -11,17 +12,20 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({defer: true}));
+app.use(cors());
 app.use(fileUpload());
+app.use(express.json());
+app.use(express.static(__dirname + '/public'));
 
 // Endpoints
 app.get('/', (req,res) => {
     res.writeHead(200, {'Content-Type':'text/html'});
-    res.end('Landing route');
+    res.send('We are on home page');
 });
 
-app.post('/upload', (req,res) => {
-    console.log('req',req.body);
+app.post('/upload', (req , res) => {
+    console.log('req',req.files);
     if(req.files == null){
         return res.status(400).json({message: 'No file uploaded', name:'ben10'})
     }
