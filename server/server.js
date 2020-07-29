@@ -16,20 +16,26 @@ app.use(bodyParser.json({defer: true}));
 app.use(cors());
 app.use(fileUpload());
 app.use(express.json());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
 // Endpoints
 app.get('/', (req,res) => {
-    res.writeHead(200, {'Content-Type':'text/html'});
     res.send('We are on home page');
 });
-
 app.post('/upload', (req , res) => {
-    console.log('req',req.files);
+
     if(req.files == null){
-        return res.status(400).json({message: 'No file uploaded', name:'ben10'})
+        return res.status(400).json({message: 'No file uploaded'})
     }
-    return res.status(200).write('test');
+
+    const file = req.files.file;
+    file.mv(`${__dirname}/public/uploads/${file.name}`, err => {
+        if(err){
+            console.error(err);
+            return res.status(500).send(err);
+        }
+        res.json({fileName:file.name, filePath:`/uploads/${file.name}`});
+    });
 });
 
 

@@ -1,5 +1,6 @@
 import React, { useState} from "react";
 import { useForm } from "react-hook-form";
+import axios from 'axios';
 
 import { Form, Image,Grid, Label, Header, Button } from "semantic-ui-react";
 
@@ -16,25 +17,26 @@ export default () => {
       });
     }
   }
-  const handleUpload = async (data) => {
+  const handleUpload =  (data) => {
     const formData = new FormData();
     formData.append('file',image.raw);
-    try{
-      const res = await fetch("http://localhost:4000/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "charset":"utf-8"
-        },
-        body: formData
-      });
-      const resJson = await res.json();
-      const [fileName, filePath ] = resJson.data;
+
+    axios.post('http://localhost:4000/upload',formData)
+    .then(response =>{
+      console.log(response);
+      const {fileName, filePath} = response.data;
       setUploadedFile({fileName, filePath});
-    }catch(err){
-      console.log('err',err);
-    }
+    })
+    .catch(err => {
+      if(err.response.status === 500){
+        console.log('There was a server problem');
+      }else{
+      console.log('err', err.response.message);
+      }
+    })
+
   }
+  console.log('uploadedFile',uploadedFile)
 
    return (
     <React.Fragment>
@@ -66,6 +68,10 @@ export default () => {
           </Button>
         </Form.Field>
       </Form>
+      {uploadedFile && <div>
+        <h3>{uploadedFile.fileName}</h3>
+      <img src={uploadedFile.filePath} title="dd" alt="ss" />
+        </div>}
           {image && image.preview && <Image bordered src={image.preview} title="ben10" alt="ben10" size="medium" /> }
           </Grid.Column>
     </React.Fragment>
